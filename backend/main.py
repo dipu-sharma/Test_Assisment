@@ -28,6 +28,8 @@ app.include_router(attendance_router)
 app.include_router(dashboard_router)
 
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to HRMS Lite API"}
+if __name__ == "__main__":
+    import uvicorn
+    import os
+    port = int(os.environ.get("PORT", 8002))
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=port, reload=False)
