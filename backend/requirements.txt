@@ -1,7 +1,7 @@
 fastapi
 uvicorn[standard]
 sqlalchemy
-aiosqlite
+asyncpg
 pydantic
 pydantic-settings
 email-validator
