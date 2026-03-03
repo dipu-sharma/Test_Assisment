@@ -80,7 +80,10 @@
 </template>
 
 <script setup>
+import { computed, watch } from 'vue'
+
 const config = useRuntimeConfig()
+const route = useRoute()
 
 const columns = [
   { id: 'employee_name', accessorKey: 'employee_name', header: 'Employee Name' },
@@ -88,8 +91,18 @@ const columns = [
 ]
 
 // Fetch dashboard summary from the server-side API
-const { data: dashboardData, pending } = await useFetch('/dashboard/summary', {
+const { data, pending, refresh } = await useFetch('/dashboard/summary', {
   baseURL: config.public.apiBase,
   key: 'dashboard-summary-page'
 })
+
+// Reactively provide dashboard data using computed
+const dashboardData = computed(() => data.value)
+
+// Refresh data whenever we navigate back to the dashboard or route changes
+watch(() => route.path, (newPath) => {
+  if (newPath === '/') {
+    refresh()
+  }
+}, { immediate: true })
 </script>
